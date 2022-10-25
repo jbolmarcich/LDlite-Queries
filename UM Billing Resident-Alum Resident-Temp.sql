@@ -1,8 +1,10 @@
 with
   parameters AS (
     SELECT
-      '{Start Date (YYYY-MM-DD)}':: VARCHAR AS start_date, --Change this value to the earliest date you want to see
-      '{End Date (YYYY-MM-DD)}':: VARCHAR AS end_date --Change this value to the latest date you want to see
+      '{Start Date (YYYY-MM-DD)}':: VARCHAR AS start_date,
+    --Change this value to the earliest date you want to see
+      '{End Date (YYYY-MM-DD)}':: VARCHAR AS end_date 
+    --Change this value to the latest date you want to see
   )
 select
   users.barcode as "Patron Barcode",
@@ -58,13 +60,8 @@ from
 where
   users.barcode != 'failsafe' 
   --and accounts.owner_id = '' --Include only actions on bills owned by an institution
-  and (
-    (
-      patron_groups.group in ('Faculty', 'Staff')
-      and users.external_system_id like '%@hampshire.edu'
-    )
-    or patron_groups.group = 'HC Resident/Alum'
-  )
+  and patron_groups.group in ('UM Resident/Alum', 'UM Resident/Alum Temp Card')
+  --and users.external_system_id like '%@umass.edu'
   and TO_DATE(
     actions.date_action,
     'YYYY-MM-DD"T"HH24:MI:SS.MS"+0000"'
