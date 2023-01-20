@@ -8,8 +8,8 @@ select
 	sm.sf,
 	sm."content"
 from
-	public.srs_marctab sm
-inner join public.srs_marctab sm2 on
+	folio_source_record.srs_marctab sm
+inner join folio_source_record.srs_marctab sm2 on
 	sm2.instance_hrid = sm.instance_hrid
 where
 	sm.field like '245'

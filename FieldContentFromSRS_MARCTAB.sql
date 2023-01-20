@@ -8,7 +8,7 @@ select
 	sm.sf,
 	sm."content"  
 from
-	public.srs_marctab sm
+	folio_source_record.srs_marctab sm
 where
 	sm.field like '245'
 	sm.sf like 'h'

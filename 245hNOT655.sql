@@ -2,7 +2,7 @@ select
 *
 from
 	folio_source_record.srs_marctab sm
-left join public.srs_marctab sm2 on
+left join folio_source_record.srs_marctab sm2 on
 	sm2.instance_hrid = sm.instance_hrid
 where
 	sm.field like '245'
