@@ -5,8 +5,7 @@ with
       '{End Date (YYYY-MM-DD)}':: VARCHAR AS end_date --Change this value to the latest date you want to see
   )
 select
-  accounts.id as "Fee/Fine ID",
-  --users.barcode as "Patron Barcode",
+  users.barcode as "Patron Barcode",
   case
     when users.external_system_id like '%@%' then substring(
       users.external_system_id
@@ -15,11 +14,10 @@ select
     )
     else users.external_system_id
   end as "University ID",
-  --users.personal__email as "Patron Email",
+  users.personal__email as "Patron Email",
   patron_groups.group as "Patron Group",
   substring(accounts.metadata__created_date, 0, 11) as "Billed Date",
   substring(actions.date_action, 0, 11) as "Transaction Date",
-  actions.type_action as "Transaction Description",
   case
     when actions.type_action in (
       'Credited fully',
@@ -43,11 +41,13 @@ select
     ) then actions.amount_action
     else '0'
   end as "Transaction Amount",
+  actions.type_action as "Transaction Description",
   accounts.barcode as "Item Barcode",
-  users.personal__last_name || ', ' || users.personal__first_name as "Patron name",
-  accounts.title as "Item title",
   accounts.fee_fine_owner as "FeeFine Owner",
-  locations.name as "Item Location at Checkout"
+  users.personal__last_name || ', ' || users.personal__first_name as "Patron name",
+  locations.name as "Location at Checkout",
+  accounts.title as "Item title",
+  accounts.id
 from
   feesfines.feefineactions__t as actions
   join feesfines.accounts__t as accounts on actions.account_id = accounts.id
@@ -56,14 +56,11 @@ from
   join users.groups__t as patron_groups on users.patron_group = patron_groups.id
   join inventory.location__t as locations on loans.item_effective_location_id_at_check_out = locations.id
 where
-  users.barcode != 'failsafe' --and accounts.owner_id = '' --Include only actions on bills owned by an institution
-  and (
-    (
-      patron_groups.group in ('Graduate', 'Faculty', 'Staff')
-      and users.external_system_id like '%@amherst.edu'
-    )
-    or patron_groups.group = 'AC Resident'
-  )
+  users.barcode != 'failsafe' 
+  --and accounts.owner_id = '' --Include only actions on bills owned by an institution
+  and patron_groups.group in ('UM Resident/Alum', 'UM Resident/Alum Temp Card')
+  and users.external_system_id like '%@umass.edu'
+  and locations.name like 'UM%'
   and TO_DATE(
     actions.date_action,
     'YYYY-MM-DD"T"HH24:MI:SS.MS"+0000"'
