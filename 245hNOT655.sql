@@ -1,7 +1,7 @@
 select
 *
 from
-	public.srs_marctab sm
+	folio_source_record.srs_marctab sm
 left join public.srs_marctab sm2 on
 	sm2.instance_hrid = sm.instance_hrid
 where
