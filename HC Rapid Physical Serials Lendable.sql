@@ -1,5 +1,5 @@
 -- Active: 1666295278584@@reportingtest.ddns.umass.edu@6991@ldplite
--- UM Rapid Physical Serials Lendable
+-- HC Rapid Physical Serials Lendable
 select
 	string_agg(distinct instances.title::text, 'NEXT') as "Title",
 	string_agg(distinct locations.name::text, 'NEXT' ) as "Location",
@@ -43,5 +43,5 @@ where
 	and (oclc.oclc_val is not Null OR issn.issn_val is not Null OR isbn.isbn_val is not Null)
 	and statements.holdings_statements__statement is not NULL
 	and mat_type.name in ('Journal', 'Newspaper', 'Microform', 'Serial')
-	and locations.code like 'UM%'
+	and locations.code like 'HC%'
 group by holdings.id
