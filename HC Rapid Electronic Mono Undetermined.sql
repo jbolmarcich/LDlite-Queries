@@ -1,5 +1,5 @@
 -- Active: 1666295278584@@reportingtest.ddns.umass.edu@6991
--- UM Rapid Electronic Mono Undetermined
+-- HC Rapid Electronic Mono Undetermined
 select
 
 	string_agg(distinct instances.title::text, '') as "Title",
@@ -46,5 +46,5 @@ where
 	true
 	and (oclc.oclc_val is not Null OR issn.issn_val is not Null OR isbn.isbn_val is not Null)
 	and mat_type.name in ('E-Book Package', 'E-Book') 
-	and locations.code = 'UMWWW'
+	and locations.code = 'HNET'
 group by holdings.id
