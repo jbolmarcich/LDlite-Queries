@@ -1,5 +1,5 @@
 -- Active: 1666295278584@@reportingtest.ddns.umass.edu@6991@ldplite
---UM Rapid Electronic Serials Undetermined
+--HC Rapid Electronic Serials Undetermined
 select
 	string_agg(distinct instances.title::text, 'NEXT') as "Title",
 	string_agg(distinct locations.name::text, 'NEXT' ) as "Location",
@@ -46,5 +46,5 @@ where
 	--and (oclc.oclc_val is not Null OR issn.issn_val is not Null OR isbn.isbn_val is not Null)
 	--and statements.holdings_statements__statement is not NULL
 	and mat_type.name in ('E-Journal Package', 'E-Newspaper', 'E-Journal')
-	and locations.code like 'UMWWW'
+	and locations.code like 'HNET'
 group by holdings.id
