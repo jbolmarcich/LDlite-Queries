@@ -47,23 +47,23 @@ select
   users.personal__last_name || ', ' || users.personal__first_name as "Patron name",
   accounts.title as "Item title",
   accounts.fee_fine_owner as "FeeFine Owner",
-  locations.name as "Item Location at Checkout"
+  locations.name as "Item Location at Checkout",
+  material_type.name as "Material Type"
 from
   feesfines.feefineactions__t as actions
-  join feesfines.accounts__t as accounts on actions.account_id = accounts.id
-  join users.users__t as users on accounts.user_id = users.id
+  left join feesfines.accounts__t as accounts on actions.account_id = accounts.id
+  join users.users__t as users on actions.user_id = users.id
   left join circulation.loan__t as loans on accounts.loan_id = loans.id
-  join users.groups__t as patron_groups on users.patron_group = patron_groups.id
+  left join users.groups__t as patron_groups on users.patron_group = patron_groups.id
   left join inventory.location__t as locations on loans.item_effective_location_id_at_check_out = locations.id
+  left join inventory.material_type__t as material_type on material_type.id = accounts.material_type_id
 where
-  users.barcode != 'failsafe' --and accounts.owner_id = '' --Include only actions on bills owned by an institution
-  and (
-    (
-      patron_groups.group in ('Graduate', 'Faculty', 'Staff')
-      and users.external_system_id like '%@amherst.edu'
-    )
-    or patron_groups.group = 'AC Resident'
-  )
+  users.barcode != 'failsafe' 
+  --and accounts.owner_id = '' --Include only actions on bills owned by an institution
+  --and actions.type_action in ('Hourly Equipment Replacement Bill', 'Daily Equipment Replacement Bill', 'Lost item fee', 'Lost item processing fee')
+  and material_type.name = 'Equipment'
+  --and patron_groups.group = 'Undergraduate'
+  and users.external_system_id like '%@umass.edu'
   and TO_DATE(
     actions.date_action,
     'YYYY-MM-DD"T"HH24:MI:SS.MS"+0000"'
