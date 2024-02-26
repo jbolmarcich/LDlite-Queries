@@ -3,8 +3,10 @@ with
   parameters AS (
     SELECT
   	  --Start and end dates are INCLUSIVE please use a YYYYMMDD format
-      '{Start Date (YYYY-MM-DD)}':: VARCHAR AS start_date, -- Change this value to the first date of the desired range
-      '{End Date (YYYY-MM-DD)}':: VARCHAR AS end_date --Change this value to the last date of the desired range
+      --'{Start Date (YYYY-MM-DD)}':: VARCHAR AS start_date, -- Change this value to the first date of the desired range
+      --'{End Date (YYYY-MM-DD)}':: VARCHAR AS end_date --Change this value to the last date of the desired range
+    '2022-07-01' AS start_date,
+    '2023-06-30' AS end_date
   )
 select
   --/*
@@ -148,7 +150,7 @@ from
       join invoice.invoices__t as invoices on invoices.id = fund_distributions.invoice_id
     where
       (status = 'Paid')
-      and bill_to = 'eabe1a7d-2c24-449a-8e6b-2126f15a8f68'
+      and bill_to = 'c6fc7d4a-0281-41bb-9b17-bb571c38639f'
       and TO_DATE(payment_date, 'YYYY-MM-DD"T"HH24:MI:SS.MS"+0000"') >= TO_DATE((SELECT start_date FROM parameters), 'YYYY-MM-DD')
       and TO_DATE(payment_date, 'YYYY-MM-DD"T"HH24:MI:SS.MS"+0000"') <= TO_DATE((SELECT end_date FROM parameters), 'YYYY-MM-DD')
   ) as soa_invoice_lines

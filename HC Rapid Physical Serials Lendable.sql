@@ -10,7 +10,6 @@ select
 	string_agg(distinct isbn.isbn_val::text, ', ') as "ISBN(s)",
 	string_agg(distinct statements.holdings_statements__statement::text, ', ') as "Holdings Statement"
 	--string_agg(distinct mat_type.name::text, ', ')
-
 from
 	inventory.holdings_record__t as holdings
 join inventory.holdings_record__t__holdings_statements as statements on
@@ -42,6 +41,6 @@ where
 	true
 	and (oclc.oclc_val is not Null OR issn.issn_val is not Null OR isbn.isbn_val is not Null)
 	and statements.holdings_statements__statement is not NULL
-	and mat_type.name in ('Journal', 'Newspaper', 'Microform', 'Serial')
-	and locations.code like 'HC%'
+	--and mat_type.name in ('Journal', 'Newspaper', 'Microform', 'Serial')
+	and locations.name like 'HC%'
 group by holdings.id

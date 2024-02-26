@@ -28,8 +28,9 @@ LEFT JOIN inventory.location__t LT ON
     IT.effective_location_id = LT.id
 LEFT JOIN inventory.holdings_record__t HRT ON
     IT.holdings_record_id = HRT.id
-INNER JOIN inventory.instance__t IT2 ON
+LEFT JOIN inventory.instance__t IT2 ON
     HRT.instance_id = IT2.id
+
 WHERE
     LT.code = 'HSTAC'
     AND IT.effective_call_number_components__call_number LIKE 'HQ%'
