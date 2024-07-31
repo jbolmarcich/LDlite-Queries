@@ -40,12 +40,16 @@ create table locations_service_points as
 	ll.location_id,
 	ll.discovery_display_name as location_discovery_display_name,
 	ll.location_name,
+	ll.location_code,
 	ll.library_id,
 	ll.library_name,
+	ll.library_code,
 	ll.campus_id,
 	ll.campus_name,
+	ll.campus_code,
 	ll.institution_id,
-	ll.institution_name
+	ll.institution_name,
+	ll.institution_code
 from
 	inventory.location as il
 cross join lateral jsonb_array_elements(jsonb_extract_path(il.jsonb,

@@ -1,4 +1,3 @@
--- Active: 1666295278584@@reportingtest.ddns.umass.edu@6991@ldplite
 -- HC Rapid Physical Serials Lendable
 select
 	string_agg(distinct instances.title::text, 'NEXT') as "Title",
@@ -8,8 +7,8 @@ select
 	string_agg(distinct oclc.oclc_val::text, ', ') as "OCLC Number(s)",
 	string_agg(distinct issn.issn_val::text, ', ') as "ISSN(s)",
 	string_agg(distinct isbn.isbn_val::text, ', ') as "ISBN(s)",
-	string_agg(distinct statements.holdings_statements__statement::text, ', ') as "Holdings Statement",
-	string_agg(distinct mat_type.name::text, ', ')
+	string_agg(distinct statements.holdings_statements__statement::text, ', ') as "Holdings Statement"
+	--string_agg(distinct mat_type.name::text, ', ')
 from
 	inventory.holdings_record__t as holdings
 join inventory.holdings_record__t__holdings_statements as statements on
@@ -42,5 +41,5 @@ where
 	and (oclc.oclc_val is not Null OR issn.issn_val is not Null OR isbn.isbn_val is not Null)
 	and statements.holdings_statements__statement is not NULL
 	and mat_type.name in ('Journal', 'Newspaper', 'Microform', 'Serial')
-	--and locations.name in ('H%','F%')
+	and locations.code like 'H%'
 group by holdings.id
